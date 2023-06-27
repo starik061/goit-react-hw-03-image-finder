@@ -1,15 +1,30 @@
 import React, { Component } from 'react';
+import { Searchbar } from './Searchbar/Searchbar';
+import { getImagesByQuery } from './imageAPI/api';
 
 export class App extends Component {
-  state = {};
+  state = {
+    searchQuery: '',
+    imagesData: [],
+  };
+
   componentDidMount() {}
 
-  componentDidUpdate(prevProps, prevState) {}
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevState.searchQuery !== this.state.searchQuery) {
+      this.setState({
+        imagesData: await getImagesByQuery(this.state.searchQuery),
+      });
+    }
+  }
 
+  handleSearchSubmit = searchQuery => {
+    this.setState({ searchQuery });
+  };
   render() {
     return (
       <>
-        <h1>Test</h1>
+        <Searchbar onSearchSubmit={this.handleSearchSubmit} />
       </>
     );
   }
