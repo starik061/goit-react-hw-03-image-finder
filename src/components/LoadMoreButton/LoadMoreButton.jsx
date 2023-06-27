@@ -7,6 +7,13 @@ export class LoadMoreButton extends Component {
   componentDidMount() {}
 
   render() {
-    return <LoadMoreButtonStyle type="button">Load more</LoadMoreButtonStyle>;
+    return (
+      <LoadMoreButtonStyle
+        onClick={this.props.onLoadMoreBtnClick}
+        type="button"
+      >
+        Load more
+      </LoadMoreButtonStyle>
+    );
   }
 }
