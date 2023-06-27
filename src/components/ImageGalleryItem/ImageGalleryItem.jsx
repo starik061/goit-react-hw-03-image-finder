@@ -3,6 +3,7 @@ import {
   ImageGalleryItemStyle,
   ImageGalleryItemImgStyle,
 } from './ImageGallery.styled';
+
 export class ImageGalleryItem extends Component {
   state = {};
 

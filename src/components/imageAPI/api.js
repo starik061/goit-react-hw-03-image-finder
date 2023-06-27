@@ -8,7 +8,8 @@ export const getImagesByQuery = async query => {
     let imageData = await axios(
       `?key=${API_KEY}&q=${query}&page=1&image_type=photo&orientation=horizontal&per_page=12`
     );
-    return imageData.data.hits;
+    console.log(imageData.data);
+    return imageData.data;
   } catch (error) {
     console.warn(error.message);
   }
