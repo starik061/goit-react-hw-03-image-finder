@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { AppStyle } from './App.styled';
 import { Searchbar } from './Searchbar/Searchbar';
+import { ImageGallery } from './ImageGallery/ImageGallery';
 import { getImagesByQuery } from './imageAPI/api';
 
 export class App extends Component {
@@ -23,9 +25,10 @@ export class App extends Component {
   };
   render() {
     return (
-      <>
+      <AppStyle>
         <Searchbar onSearchSubmit={this.handleSearchSubmit} />
-      </>
+        <ImageGallery galleryImages={this.state.imagesData} />
+      </AppStyle>
     );
   }
 }
