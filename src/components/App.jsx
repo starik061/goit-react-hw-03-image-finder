@@ -20,17 +20,11 @@ export class App extends Component {
       const { totalHits, hits } = await getImagesByQuery(
         this.state.searchQuery
       );
-      totalHits > 12
-        ? this.setState({
-            imagesData: hits,
-            totalHits,
-            loadMoreVisible: true,
-          })
-        : this.setState({
-            imagesData: hits,
-            totalHits,
-            loadMoreVisible: false,
-          });
+      this.setState({
+        imagesData: hits,
+        totalHits,
+        loadMoreVisible: totalHits > 12 ? true : false,
+      });
     }
   }
 
