@@ -4,6 +4,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { getImagesByQuery } from './imageAPI/api';
 import { LoadMoreButton } from './LoadMoreButton/LoadMoreButton';
+import { Loader } from './Loader/Loader';
 
 export class App extends Component {
   state = {
@@ -12,6 +13,7 @@ export class App extends Component {
     totalHits: 0,
     loadMoreVisible: false,
     page: 1,
+    loaderVisible: false,
   };
 
   componentDidMount() {}
@@ -19,27 +21,38 @@ export class App extends Component {
   async componentDidUpdate(prevProps, prevState) {
     //Это условие сработает при новом поисковом запросе и обнулив массив изображений в стэйте заполнит его новым массивом с бэкэнда
     if (prevState.searchQuery !== this.state.searchQuery) {
+      this.setState({ loaderVisible: true });
+
       const { totalHits, hits } = await getImagesByQuery(
         this.state.searchQuery,
         this.state.page
       );
-      this.setState({
-        imagesData: hits,
-        totalHits,
-        loadMoreVisible: totalHits > 12 ? true : false,
-      });
+      setTimeout(() => {
+        this.setState({
+          imagesData: hits,
+          totalHits,
+          loadMoreVisible: totalHits > 12 ? true : false,
+          loaderVisible: false,
+        });
+      }, 600);
     }
     //Это условие сработает при нажатии Load more, увеличится страница и в массив добавятся следующие 12 элементов
     if (prevState.page !== this.state.page) {
+      this.setState({ loaderVisible: true });
+
       const { totalHits, hits } = await getImagesByQuery(
         this.state.searchQuery,
         this.state.page
       );
-      this.setState({
-        imagesData: [...prevState.imagesData, ...hits],
-        totalHits,
-        loadMoreVisible: totalHits > 12 ? true : false,
-      });
+
+      setTimeout(() => {
+        this.setState({
+          imagesData: [...prevState.imagesData, ...hits],
+          totalHits,
+          loadMoreVisible: totalHits > 12 ? true : false,
+          loaderVisible: false,
+        });
+      }, 600);
     }
   }
 
@@ -66,7 +79,11 @@ export class App extends Component {
         <Searchbar onSearchSubmit={this.handleSearchSubmit} />
 
         <ImageGallery galleryImages={this.state.imagesData} />
-
+        {this.state.loaderVisible && (
+          <div style={{ margin: '0 auto' }}>
+            <Loader />
+          </div>
+        )}
         {this.state.loadMoreVisible && (
           <div style={{ margin: '0 auto' }}>
             <LoadMoreButton onLoadMoreBtnClick={this.loadMoreImages} />
