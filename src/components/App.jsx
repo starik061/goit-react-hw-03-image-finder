@@ -14,6 +14,7 @@ export class App extends Component {
     loadMoreVisible: false,
     page: 1,
     loaderVisible: false,
+    isFound: true,
   };
 
   componentDidMount() {}
@@ -21,7 +22,7 @@ export class App extends Component {
   async componentDidUpdate(prevProps, prevState) {
     //Это условие сработает при новом поисковом запросе и обнулив массив изображений в стэйте заполнит его новым массивом с бэкэнда
     if (prevState.searchQuery !== this.state.searchQuery) {
-      this.setState({ loaderVisible: true });
+      this.setState({ loaderVisible: true, isFound: true });
 
       const { totalHits, hits } = await getImagesByQuery(
         this.state.searchQuery,
@@ -33,6 +34,7 @@ export class App extends Component {
           totalHits,
           loadMoreVisible: totalHits > 12 ? true : false,
           loaderVisible: false,
+          isFound: !!hits.length,
         });
       }, 600);
     }
@@ -77,8 +79,14 @@ export class App extends Component {
     return (
       <AppStyle>
         <Searchbar onSearchSubmit={this.handleSearchSubmit} />
+        {this.state.isFound ? (
+          <ImageGallery galleryImages={this.state.imagesData} />
+        ) : (
+          <div style={{ margin: '0 auto' }}>
+            <p>Nothing found</p>
+          </div>
+        )}
 
-        <ImageGallery galleryImages={this.state.imagesData} />
         {this.state.loaderVisible && (
           <div style={{ margin: '0 auto' }}>
             <Loader />
