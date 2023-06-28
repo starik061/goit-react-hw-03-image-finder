@@ -38,6 +38,7 @@ export class App extends Component {
         });
       }, 600);
     }
+
     //Это условие сработает при нажатии Load more, увеличится страница и в массив добавятся следующие 12 элементов
     if (prevState.page !== this.state.page) {
       this.setState({ loaderVisible: true });
@@ -51,7 +52,8 @@ export class App extends Component {
         this.setState({
           imagesData: [...prevState.imagesData, ...hits],
           totalHits,
-          loadMoreVisible: totalHits > 12 ? true : false,
+          loadMoreVisible:
+            totalHits > prevState.imagesData.length + 12 ? true : false,
           loaderVisible: false,
         });
       }, 600);
