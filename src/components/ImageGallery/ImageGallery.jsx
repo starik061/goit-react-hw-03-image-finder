@@ -15,7 +15,13 @@ export class ImageGallery extends Component {
     return (
       <ImageGalleryStyle>
         {imagesData.map(({ id, webformatURL, largeImageURL }) => {
-          return <ImageGalleryItem key={id} url={webformatURL} />;
+          return (
+            <ImageGalleryItem
+              key={id}
+              url={webformatURL}
+              modalUrl={largeImageURL}
+            />
+          );
         })}
       </ImageGalleryStyle>
     );
