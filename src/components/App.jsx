@@ -21,7 +21,10 @@ export class App extends Component {
 
   async componentDidUpdate(prevProps, prevState) {
     //Это условие сработает при новом поисковом запросе и обнулив массив изображений в стэйте заполнит его новым массивом с бэкэнда
-    if (prevState.searchQuery !== this.state.searchQuery) {
+    if (
+      prevState.searchQuery !== this.state.searchQuery &&
+      this.state.page === 1
+    ) {
       this.setState({ loaderVisible: true, isFound: true });
 
       const { totalHits, hits } = await getImagesByQuery(
@@ -40,7 +43,10 @@ export class App extends Component {
     }
 
     //Это условие сработает при нажатии Load more, увеличится страница и в массив добавятся следующие 12 элементов
-    if (prevState.page !== this.state.page) {
+    if (
+      prevState.page !== this.state.page &&
+      prevState.searchQuery === this.state.searchQuery
+    ) {
       this.setState({ loaderVisible: true });
 
       const { totalHits, hits } = await getImagesByQuery(
